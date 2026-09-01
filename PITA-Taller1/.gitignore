@@ -1,0 +1,37 @@
+# Archivos y carpetas de compilación de C++
+build/
+cmake-build-debug/
+cmake-build-release/
+*.o
+*.obj
+*.exe
+*.out
+*.dll
+*.so
+*.a
+*.lib
+
+# Archivos de CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+.env
+
+# Archivos del editor
+.vscode/
+.idea/
+.DS_Store
+
+# Archivos temporales
+*.log
+*.tmp
+*.swp

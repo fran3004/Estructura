@@ -1,0 +1,5 @@
+# Dependencias del proyecto Python
+# Se agregarán según se desarrolle la versión funcional.
+# Ejemplo:
+# PyQt5>=5.15
+# pandas>=2.0
