@@ -6,6 +6,7 @@
 
 #include <string>
 #include "LinkedList.h"
+#include "Program.h"
 
 class Faculty {
 public:
@@ -15,7 +16,7 @@ public:
             const std::string& dean,
             const std::string& creation_date,
             bool active,
-            const LinkedList<int>& program_list);
+            const LinkedList<Program*>& program_list);
 
 private:
     int faculty_id;
@@ -23,7 +24,7 @@ private:
     std::string dean;
     std::string creation_date;
     bool active;
-    LinkedList<int> program_list;
+    LinkedList<Program*> program_list;
 };
 
 #endif // FACULTY_H

@@ -6,6 +6,7 @@
 
 #include <string>
 #include "LinkedList.h"
+#include "Enrollment.h"
 
 class Student {
 public:
@@ -22,7 +23,7 @@ public:
                const std::string& status,
                double cumulative_average,
                bool active,
-               const LinkedList<int>& enrollment_list);
+               const LinkedList<Enrollment*>& enrollment_list);
 
 private:
     int student_id;
@@ -37,7 +38,7 @@ private:
     std::string status;
     double cumulative_average;
     bool active;
-    LinkedList<int> enrollment_list;
+    LinkedList<Enrollment*> enrollment_list;
 };
 
 #endif // STUDENT_H
