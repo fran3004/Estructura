@@ -15,3 +15,25 @@ Professor::Professor(int professor_id, const std::string& full_name, const std::
     : professor_id(professor_id), full_name(full_name), document_type(document_type), identity_document(identity_document), email(email), phone(phone), faculty_id(faculty_id), employment_type(employment_type), category_rank(category_rank), academic_title(academic_title), years_of_qualified_experience(years_of_qualified_experience),
       dedication(dedication),
       lecture_hours(lecture_hours), managerial_role(managerial_role), category_score(category_score), title_score(title_score), experience_score(experience_score), productivity_score(productivity_score), academic_management_score(academic_management_score), total_points(total_points), point_value(point_value), base_monthly_salary(base_monthly_salary), health_discount(health_discount), pension_discount(pension_discount), severance_provision(severance_provision), bonus_provision(bonus_provision), vacation_provision(vacation_provision), net_salary(net_salary), active(active) {}
+
+int Professor::get_professor_id() const { return professor_id; }
+std::string Professor::get_full_name() const { return full_name; }
+void Professor::set_full_name(const std::string& value) { full_name = value; }
+int Professor::get_faculty_id() const { return faculty_id; }
+void Professor::set_faculty_id(int value) { faculty_id = value; }
+std::string Professor::get_document_type() const { return document_type; }
+std::string Professor::get_identity_document() const { return identity_document; }
+std::string Professor::get_email() const { return email; }
+std::string Professor::get_phone() const { return phone; }
+std::string Professor::get_employment_type() const { return employment_type; }
+void Professor::set_employment_type(const std::string& value) { employment_type = value; }
+std::string Professor::get_category_rank() const { return category_rank; }
+std::string Professor::get_academic_title() const { return academic_title; }
+int Professor::get_years_of_qualified_experience() const { return years_of_qualified_experience; }
+std::string Professor::get_dedication() const { return dedication; }
+int Professor::get_lecture_hours() const { return lecture_hours; }
+std::string Professor::get_managerial_role() const { return managerial_role; }
+double Professor::get_base_monthly_salary() const { return base_monthly_salary; }
+double Professor::get_net_salary() const { return net_salary; }
+bool Professor::is_active() const { return active; }
+void Professor::set_active(bool value) { active = value; }

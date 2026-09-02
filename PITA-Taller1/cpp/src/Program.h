@@ -20,6 +20,24 @@ public:
             const LinkedList<int>& course_list,
             const LinkedList<int>& student_list);
 
+    int get_program_id() const;
+    std::string get_name() const;
+    void set_name(const std::string& value);
+    int get_faculty_id() const;
+    void set_faculty_id(int value);
+    std::string get_program_director() const;
+    void set_program_director(const std::string& value);
+    std::string get_level() const;
+    void set_level(const std::string& value);
+    std::string get_modality() const;
+    void set_modality(const std::string& value);
+    bool is_active() const;
+    void set_active(bool value);
+    LinkedList<int>& get_course_list();
+    const LinkedList<int>& get_course_list() const;
+    LinkedList<int>& get_student_list();
+    const LinkedList<int>& get_student_list() const;
+
 private:
     int program_id;
     std::string name;

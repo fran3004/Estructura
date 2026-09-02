@@ -25,6 +25,20 @@ public:
                bool active,
                const LinkedList<Enrollment*>& enrollment_list);
 
+    int get_student_id() const;
+    std::string get_full_name() const;
+    void set_full_name(const std::string& value);
+    int get_program_id() const;
+    void set_program_id(int value);
+    std::string get_status() const;
+    void set_status(const std::string& value);
+    double get_cumulative_average() const;
+    void set_cumulative_average(double value);
+    bool is_active() const;
+    void set_active(bool value);
+    LinkedList<Enrollment*>& get_enrollment_list();
+    const LinkedList<Enrollment*>& get_enrollment_list() const;
+
 private:
     int student_id;
     std::string full_name;

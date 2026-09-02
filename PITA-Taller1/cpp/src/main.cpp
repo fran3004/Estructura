@@ -1,8 +1,7 @@
-// Archivo principal del programa en C++.
-
-#include "Persistence.h"
+#include "Menu.h"
 
 int main() {
-    persistence::ask_load_existing_data();
+    Menu menu;
+    menu.run();
     return 0;
 }

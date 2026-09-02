@@ -18,6 +18,18 @@ public:
             bool active,
             const LinkedList<Program*>& program_list);
 
+    int get_faculty_id() const;
+    std::string get_name() const;
+    void set_name(const std::string& value);
+    std::string get_dean() const;
+    void set_dean(const std::string& value);
+    std::string get_creation_date() const;
+    void set_creation_date(const std::string& value);
+    bool is_active() const;
+    void set_active(bool value);
+    LinkedList<Program*>& get_program_list();
+    const LinkedList<Program*>& get_program_list() const;
+
 private:
     int faculty_id;
     std::string name;
