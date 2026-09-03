@@ -1,6 +1,5 @@
 // Declaration and implementation of a generic linked list template.
-// Stores any data type and provides basic management operations.
-// This structure can be reused by future system entities.
+// Stores any data type and provides safe management operations.
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
@@ -9,6 +8,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 template <typename T>
 class LinkedList {
@@ -23,25 +23,80 @@ private:
     Node* head_;
     std::size_t size_;
 
-public:
-    // Constructor: initializes an empty list.
-    LinkedList() : head_(nullptr), size_(0) {}
-
-    // Destructor: releases all nodes to prevent memory leaks.
-    ~LinkedList() {
-        Node* current = head_;
-        while (current != nullptr) {
-            Node* next = current->next;
-            delete current;
-            current = next;
+    Node* node_at(std::size_t position) {
+        if (position >= size_) {
+            return nullptr;
         }
-        head_ = nullptr;
-        size_ = 0;
+
+        Node* current = head_;
+        std::size_t index = 0;
+        while (current != nullptr && index < position) {
+            current = current->next;
+            ++index;
+        }
+        return current;
     }
 
-    // Inserts an element at the given position.
-    // Position 0 inserts at the beginning; positions beyond the size append at the end.
+    const Node* node_at(std::size_t position) const {
+        if (position >= size_) {
+            return nullptr;
+        }
+
+        const Node* current = head_;
+        std::size_t index = 0;
+        while (current != nullptr && index < position) {
+            current = current->next;
+            ++index;
+        }
+        return current;
+    }
+
+    void copy_from(const LinkedList& other) {
+        for (const Node* current = other.head_; current != nullptr; current = current->next) {
+            insert(current->data, size_);
+        }
+    }
+
+public:
+    LinkedList() : head_(nullptr), size_(0) {}
+
+    LinkedList(const LinkedList& other) : head_(nullptr), size_(0) {
+        copy_from(other);
+    }
+
+    LinkedList& operator=(const LinkedList& other) {
+        if (this != &other) {
+            clear();
+            copy_from(other);
+        }
+        return *this;
+    }
+
+    LinkedList(LinkedList&& other) noexcept : head_(other.head_), size_(other.size_) {
+        other.head_ = nullptr;
+        other.size_ = 0;
+    }
+
+    LinkedList& operator=(LinkedList&& other) noexcept {
+        if (this != &other) {
+            clear();
+            head_ = other.head_;
+            size_ = other.size_;
+            other.head_ = nullptr;
+            other.size_ = 0;
+        }
+        return *this;
+    }
+
+    ~LinkedList() {
+        clear();
+    }
+
     void insert(const T& value, std::size_t position = 0) {
+        if (position > size_) {
+            position = size_;
+        }
+
         Node* new_node = new Node(value);
 
         if (head_ == nullptr || position == 0) {
@@ -53,7 +108,6 @@ public:
 
         Node* current = head_;
         std::size_t index = 0;
-
         while (current->next != nullptr && index < position - 1) {
             current = current->next;
             ++index;
@@ -64,41 +118,75 @@ public:
         ++size_;
     }
 
-    // Removes the first occurrence of the given value.
-    // Returns true when removed and false when it does not exist.
+    void insert_at(const T& value, std::size_t position) {
+        insert(value, position);
+    }
+
     bool remove(const T& value) {
-        if (head_ == nullptr) {
-            return false;
-        }
-
-        if (head_->data == value) {
-            Node* temporary = head_;
-            head_ = head_->next;
-            delete temporary;
-            --size_;
-            return true;
-        }
-
         Node* current = head_;
-        while (current->next != nullptr && current->next->data != value) {
+        Node* previous = nullptr;
+
+        while (current != nullptr) {
+            if (current->data == value) {
+                if (previous == nullptr) {
+                    head_ = current->next;
+                } else {
+                    previous->next = current->next;
+                }
+                delete current;
+                --size_;
+                return true;
+            }
+
+            previous = current;
             current = current->next;
         }
 
-        if (current->next == nullptr) {
+        return false;
+    }
+
+    bool remove_at(std::size_t position) {
+        if (position >= size_) {
             return false;
         }
 
-        Node* temporary = current->next;
-        current->next = temporary->next;
-        delete temporary;
+        Node* current = head_;
+        Node* previous = nullptr;
+        std::size_t index = 0;
+
+        while (current != nullptr && index < position) {
+            previous = current;
+            current = current->next;
+            ++index;
+        }
+
+        if (current == nullptr) {
+            return false;
+        }
+
+        if (previous == nullptr) {
+            head_ = current->next;
+        } else {
+            previous->next = current->next;
+        }
+
+        delete current;
         --size_;
         return true;
     }
 
-    // Checks whether a value exists in the list.
-    // Returns true when found and false otherwise.
+    T* get(std::size_t position) {
+        Node* current = node_at(position);
+        return (current == nullptr) ? nullptr : &current->data;
+    }
+
+    const T* get(std::size_t position) const {
+        const Node* current = node_at(position);
+        return (current == nullptr) ? nullptr : &current->data;
+    }
+
     bool search(const T& value) const {
-        Node* current = head_;
+        const Node* current = head_;
         while (current != nullptr) {
             if (current->data == value) {
                 return true;
@@ -108,8 +196,6 @@ public:
         return false;
     }
 
-    // Replaces the first matching value with a new value.
-    // Returns true when changed and false when the target does not exist.
     bool update(const T& target_value, const T& new_value) {
         Node* current = head_;
         while (current != nullptr) {
@@ -122,10 +208,18 @@ public:
         return false;
     }
 
-    // Traverses the list and prints each element to the console.
-    // Useful for debugging and viewing the current structure contents.
+    bool update_at(std::size_t position, const T& new_value) {
+        Node* current = node_at(position);
+        if (current == nullptr) {
+            return false;
+        }
+
+        current->data = new_value;
+        return true;
+    }
+
     void traverse() const {
-        Node* current = head_;
+        const Node* current = head_;
         std::cout << "[";
         while (current != nullptr) {
             std::cout << current->data;
@@ -137,14 +231,40 @@ public:
         std::cout << "]" << std::endl;
     }
 
-    // Returns the number of elements stored in the list.
+    void clear() {
+        Node* current = head_;
+        while (current != nullptr) {
+            Node* next_node = current->next;
+            delete current;
+            current = next_node;
+        }
+        head_ = nullptr;
+        size_ = 0;
+    }
+
+    std::vector<T> to_vector() const {
+        std::vector<T> values;
+        const Node* current = head_;
+        while (current != nullptr) {
+            values.push_back(current->data);
+            current = current->next;
+        }
+        return values;
+    }
+
     std::size_t count_elements() const {
         return size_;
     }
 
-    // Checks whether the list is empty.
     bool is_empty() const {
         return head_ == nullptr;
+    }
+
+    const T& front() const {
+        if (is_empty()) {
+            throw std::out_of_range("LinkedList is empty");
+        }
+        return head_->data;
     }
 };
 

@@ -19,6 +19,7 @@ add_executable(PITA
     src/Payroll.cpp
     src/Persistence.cpp
     src/Menu.cpp
+    src/EntityManager.cpp
 )
 
 # Include the project headers.

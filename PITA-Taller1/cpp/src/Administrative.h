@@ -27,6 +27,21 @@ public:
                    double net_salary,
                    bool active);
 
+    int get_administrative_id() const;
+    std::string get_full_name() const;
+    void set_full_name(const std::string& value);
+    std::string get_document_type() const;
+    std::string get_identity_document() const;
+    std::string get_email() const;
+    std::string get_phone() const;
+    std::string get_position() const;
+    std::string get_category() const;
+    std::string get_employment_type() const;
+    double get_base_salary() const;
+    double get_net_salary() const;
+    bool is_active() const;
+    void set_active(bool value);
+
 private:
     int administrative_id;
     std::string full_name;
